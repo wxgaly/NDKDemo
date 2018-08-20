@@ -1,5 +1,6 @@
 package wxgaly.android.puzzledemo
 
+import android.Manifest
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -13,9 +14,14 @@ import org.opencv.android.CameraBridgeViewBase
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
 import org.opencv.core.Mat
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
 
 
-class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListener, View.OnTouchListener {
+class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListener, View
+.OnTouchListener, EasyPermissions.PermissionCallbacks {
+
     private val TAG = "MainActivity"
 
     private var mPuzzle15: Puzzle15Processor? = null
@@ -47,8 +53,7 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        initView()
+        requireCameraPermission()
     }
 
     private fun initView() {
@@ -124,6 +129,42 @@ class MainActivity : AppCompatActivity(), CameraBridgeViewBase.CvCameraViewListe
 
     override fun onCameraFrame(inputFrame: Mat): Mat? {
         return mPuzzle15?.puzzleFrame(inputFrame)
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    @AfterPermissionGranted(CAMERA)
+    private fun requireCameraPermission() {
+        val perms = Manifest.permission.CAMERA
+
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            Log.d(TAG, "the permission has granted.")
+            initView()
+        } else {
+            EasyPermissions.requestPermissions(
+                    PermissionRequest.Builder(this, CAMERA, perms)
+                            .setRationale(R.string.camera)
+                            .setPositiveButtonText(R.string.yes)
+                            .setNegativeButtonText(R.string.no)
+                            .setTheme(R.style.AppTheme)
+                            .build())
+        }
+
+    }
+
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        Log.d(TAG, "the permission has denied.")
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        initView()
     }
 
 }
