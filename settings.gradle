@@ -1,1 +1,1 @@
-include ':app', ':opencvsdk'
+include ':app', ':opencvsdk', ':puzzledemo'
