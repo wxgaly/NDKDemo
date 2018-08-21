@@ -1,1 +1,1 @@
-include ':app', ':opencvsdk', ':puzzledemo'
+include ':app', ':opencvsdk', ':puzzledemo', ':cameracalibrationdemo'
