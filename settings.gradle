@@ -1,2 +1,2 @@
 //include ':app', ':opencvsdk', ':puzzledemo', ':cameracalibrationdemo', ':colorblobdetectordemo', ':facedetectiondemo'
-include  ':opencvsdk', ':facedetectiondemo'
+include  ':app',':opencvsdk', ':imagemanipulationsdemo'
