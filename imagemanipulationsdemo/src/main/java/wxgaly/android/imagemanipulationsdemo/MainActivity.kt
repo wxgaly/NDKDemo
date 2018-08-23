@@ -75,16 +75,23 @@ class MainActivity : BaseActivity(), CameraBridgeViewBase.CvCameraViewListener2 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setContentView(R.layout.activity_main)
-        cameraView.visibility = CameraBridgeViewBase.VISIBLE
-        cameraView.setCvCameraViewListener(this)
-    }
-
-    override fun initView() {
+        super.onCreate(savedInstanceState)
 //        cameraView.visibility = CameraBridgeViewBase.VISIBLE
 //        cameraView.setCvCameraViewListener(this)
+    }
+
+//    override fun getContentView(): View {
+//
+//        val contentParent = mSubDecor.findViewById(android.R.id.content) as ViewGroup
+//        contentParent.removeAllViews()
+//        LayoutInflater.from(this).inflate(R.layout.activity_main, contentParent)
+//    }
+
+    override fun initView() {
+        cameraView.visibility = CameraBridgeViewBase.VISIBLE
+        cameraView.setCvCameraViewListener(this)
     }
 
     public override fun onPause() {
@@ -154,7 +161,7 @@ class MainActivity : BaseActivity(), CameraBridgeViewBase.CvCameraViewListener2 
         mSepiaKernel = Mat(4, 4, CvType.CV_32F)
         mSepiaKernel?.apply {
             put(0, 0, /* R */0.189, 0.769, 0.393, 0.0)
-            put(1, 0, /* G */0.168, 0.686, 0.349, 0.0)
+            put(1, 0, /* G */0.789, 0.686, 0.349, 0.0)
             put(2, 0, /* B */0.131, 0.534, 0.272, 0.0)
             put(3, 0, /* A */0.000, 0.000, 0.000, 1.0)
         }
@@ -272,7 +279,7 @@ class MainActivity : BaseActivity(), CameraBridgeViewBase.CvCameraViewListener2 
 
             VIEW_MODE_PIXELIZE -> {
                 rgbaInnerWindow = rgba.submat(top, top + height, left, left + width)
-                Imgproc.resize(rgbaInnerWindow, mIntermediateMat, mSize0, 0.1, 0.1, Imgproc.INTER_NEAREST)
+                Imgproc.resize(rgbaInnerWindow, mIntermediateMat, mSize0, 0.2, 0.2, Imgproc.INTER_NEAREST)
                 Imgproc.resize(mIntermediateMat, rgbaInnerWindow, rgbaInnerWindow.size(), 0.0, 0.0, Imgproc.INTER_NEAREST)
                 rgbaInnerWindow.release()
             }

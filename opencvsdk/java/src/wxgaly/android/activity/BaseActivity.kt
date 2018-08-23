@@ -2,7 +2,6 @@ package wxgaly.android.activity
 
 import android.Manifest
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import org.opencv.R
@@ -20,8 +19,8 @@ abstract class BaseActivity: AppCompatActivity(), EasyPermissions.PermissionCall
 
     private val TAG = "BaseActivity"
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         requireCameraPermission()
     }
 
